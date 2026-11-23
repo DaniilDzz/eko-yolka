@@ -36,9 +36,9 @@ h1{font:700 clamp(30px,8vw,46px)/1.05 Unbounded,sans-serif;margin:0 0 14px;text-
 .tree a.trunk{background:light-dark(#d9c8b8,#3a2a1d)}
 .tree a.trunk.on{background:var(--trunk);box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--trunk)}
 .pic{margin:0 0 26px}
-.ph{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:3/2;background:#dfe8e2}
-.ph svg{position:absolute;inset:0;width:100%;height:100%}
-.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.ph svg{display:none;width:100%;height:auto;aspect-ratio:600/340;border-radius:16px}
+.ph.fail svg{display:block}
+.ph img{display:block;max-width:100%;max-height:78vh;width:auto;height:auto;margin:0 auto;border-radius:16px;background:var(--dim)}
 .ph.fail img{display:none}
 .pic figcaption{font-size:12px;color:var(--soft);margin-top:8px;line-height:1.4}
 .pic figcaption a{color:var(--soft)}
@@ -136,16 +136,16 @@ const PH={
 tallest:{f:"Sitka 01.JPG",n:"Ситхинская ель в Олимпийском национальном парке. Саму рекордсменку не фотографируют для публики — её место скрыто."},
 rockefeller:{f:"Rockefeller Christmas Tree.jpg"},
 trafalgar:{f:"Trafalgar Square Christmas Carols - Dec 2006.jpg",a:"Diliff, CC BY-SA 3.0"},
-riga:{f:"House of Blackheads at Dusk 3, Riga, Latvia - Diliff.jpg",a:"Diliff",n:"Дом Черноголовых на Ратушной площади — здесь в 1510 году стояла первая ёлка."},
+riga:{f:"Christmas Tree in Riga (8532890418).jpg",a:"Guillaume Speurt",n:"Бронзовая ёлка на Ратушной площади — на месте, где в 1510 году стояла первая. Надпись: «Рига — столица наряженной ёлки»."},
 quinault:{f:"Largest Sitka Spruce, Quinault Lake, Washington 2018-08-21 OC-LSC-0090.jpg"},
-belovezh:{f:"НП «Беловежская пуща» Дед Мороз.jpg",a:"J. Metselaar",n:"Поместье Деда Мороза в Беловежской пуще."},
+belovezh:{f:"НП «Беловежская пуща» Дед Мороз.jpg",a:"J. Metselaar",n:"Дом Деда Мороза в поместье, где растёт ель."},
 tjikko:{f:"Old-Tjikko-2011-07-19-001.jpg",a:"Karl Brodowsky"}
 };
 const fig=t=>{const p=PH[t.id];const art=`<svg viewBox="0 0 600 340" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Иллюстрация: ${t.name}">${ART[t.id]()}</svg>`;
-if(!p)return `<figure class="pic"><div class="ph">${art}</div><figcaption>Иллюстрация.</figcaption></figure>`;
-const u='https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(p.f.replace(/ /g,'_'))+'?width=960';
+if(!p)return `<figure class="pic"><div class="ph fail">${art}</div></figure>`;
+const u='https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(p.f.replace(/ /g,'_'))+'?width=1200';
 const pg='https://commons.wikimedia.org/wiki/File:'+encodeURIComponent(p.f.replace(/ /g,'_'));
-return `<figure class="pic"><div class="ph">${art}<img src="${u}" alt="${t.name}" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.classList.add('fail')"></div><figcaption>${p.n?p.n+' ':''}Фото: <a href="${pg}" target="_blank" rel="noopener">${p.a?p.a+' / ':''}Wikimedia Commons</a></figcaption></figure>`};
+return `<figure class="pic"><div class="ph">${art}<img src="${u}" alt="${t.name}" referrerpolicy="no-referrer" onerror="this.parentNode.classList.add('fail')"></div><figcaption>${p.n?p.n+' ':''}Фото: <a href="${pg}" target="_blank" rel="noopener">${p.a?p.a+' / ':''}Wikimedia Commons</a></figcaption></figure>`};
 const app=document.getElementById('app');
 const fmt=(v,p,n)=>Math.abs(v).toFixed(4).replace('.',',')+'° '+(v>=0?p:n);
 const tree=cur=>`<nav class="tree" aria-label="Ёлка из QR-кодов">${T.map(t=>`<a href="#${t.id}" style="grid-row:${t.row+1};grid-column:${t.col}/span 2" class="${t.trunk?'trunk ':''}${cur===t.id?'on':''}" aria-label="${t.name}"></a>`).join('')}</nav>`;
