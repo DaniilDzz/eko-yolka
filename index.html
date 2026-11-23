@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Эко-ёлка</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light dark;
+--bg:light-dark(#f7f8f5,#0e1a12);
+--ink:light-dark(#13261a,#e9efe9);
+--soft:light-dark(#4b5e50,#a9bcae);
+--green:light-dark(#1d5a32,#3f9a5f);
+--dim:light-dark(#c9d6cc,#22382a);
+--trunk:light-dark(#6b4423,#a36b3d);
+--card:light-dark(#ffffff,#15261b);
+--line:light-dark(#dfe6e0,#24382a)}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "Golos Text",system-ui,sans-serif;overflow-x:clip}
+a{color:var(--green)}
+.wrap{max-width:640px;margin:0 auto;padding:clamp(24px,5vw,48px) max(5vw,18px) 40px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:28px;font-size:14px;color:var(--soft)}
+.top a{color:var(--soft);text-decoration:none;font-weight:500}
+.top a:hover{color:var(--ink)}
+h1{font:700 clamp(30px,8vw,46px)/1.05 Unbounded,sans-serif;margin:0 0 14px;text-wrap:balance}
+.kind{margin:0 0 22px;color:var(--soft);font-size:15px}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:center;margin:8px 0 30px}
+.record{font:700 clamp(32px,9vw,60px)/1.05 Unbounded,sans-serif;color:var(--green);overflow-wrap:break-word}
+.record small{display:block;font:500 15px/1.35 "Golos Text",sans-serif;color:var(--soft);margin-top:10px;white-space:normal}
+.tree{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;width:100%;max-width:230px;justify-self:end}
+.tree a{grid-column:span 2;aspect-ratio:1;border-radius:6px;background:var(--dim);display:block;transition:transform .2s,background .2s}
+.tree a:hover{transform:scale(1.06)}
+.tree a.on{background:var(--green);box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--green)}
+.tree a.trunk{background:light-dark(#d9c8b8,#3a2a1d)}
+.tree a.trunk.on{background:var(--trunk);box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--trunk)}
+.story p{margin:0 0 16px}
+.facts{list-style:none;padding:0;margin:22px 0 0;border-top:1px solid var(--line)}
+.facts li{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--line);font-size:15px}
+.facts li span:first-child{color:var(--soft)}
+.facts li span:last-child{text-align:right;font-weight:500}
+.coords{margin-top:34px;background:var(--green);color:#fff;border-radius:14px;padding:22px 22px 20px}
+.coords.hidden{background:var(--card);color:var(--ink);border:2px dashed var(--green)}
+.coords h2{font:500 13px/1.2 "Golos Text",sans-serif;margin:0 0 8px;opacity:.8}
+.coords .num{font:500 clamp(19px,5.4vw,24px)/1.3 Unbounded,sans-serif;word-break:break-word}
+.coords .note{font-size:14px;opacity:.85;margin:10px 0 0}
+.btn{display:inline-flex;align-items:center;min-height:44px;margin-top:16px;padding:0 18px;border-radius:999px;background:#fff;color:#13261a;font-weight:600;text-decoration:none;font-size:15px}
+.btn:focus-visible,.tree a:focus-visible,.list a:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.list{display:grid;gap:8px;margin:28px 0 0;padding:0;list-style:none}
+.list a{display:flex;align-items:center;gap:14px;min-height:56px;padding:10px 14px;background:var(--card);border:1px solid var(--line);border-radius:12px;text-decoration:none;color:var(--ink)}
+.list a i{flex:none;width:22px;height:22px;border-radius:4px;background:var(--green)}
+.list a i.t{background:var(--trunk)}
+.list a b{font-weight:600;display:block;line-height:1.3}
+.list a span{font-size:14px;color:var(--soft)}
+.others{margin-top:40px;padding-top:20px;border-top:1px solid var(--line)}
+.others h2,.intro h2{font:600 15px/1.3 "Golos Text",sans-serif;margin:0;color:var(--soft)}
+footer{margin-top:36px;font-size:13px;color:var(--soft)}
+.view{animation:in .4s ease both}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.view{animation:none}.tree a{transition:none}}
+@media (max-width:420px){.hero{grid-template-columns:minmax(0,1fr) 120px;gap:16px}}
+</style>
+</head>
+<body>
+<main class="wrap" id="app"></main>
+<script>
+{
+const T=[
+{id:"tallest",row:0,col:3,name:"Самая высокая ель",kind:"Ситхинская ель · Калифорния, США",rec:"100,2 м",recNote:"высота — рекорд среди всех елей",
+story:["Её нашли в 2021 году исследователи Майкл Тейлор и Тресса Гиббард, потом перемеряли вместе со Стивом Силлеттом. 100,2 метра — примерно 33-этажный дом. Долгие годы такие исследователи искали дерево выше ста метров, которое не было бы секвойей, и вот нашли.",
+"Растёт она где-то в национальном парке Редвуд в Калифорнии, в густой части леса. До 2021 года рекордсменкой считалась ель Raven's Tower — 96,7 метра.",
+"Точное место никто не раскрывает. Так берегут самые известные деревья: от туристов вытаптывается почва вокруг корней, и великан может погибнуть."],
+facts:[["Вид","Picea sitchensis"],["Высота","100,2 м"],["Найдена","2021"],["Прошлый рекорд","96,7 м"]],
+hidden:true},
+{id:"rockefeller",row:1,col:2,name:"Ёлка Рокфеллер-центра",kind:"Нью-Йорк, США",rec:"1931",recNote:"год, когда рабочие поставили первую ёлку",
+story:["Сочельник 1931 года, Великая депрессия. Строители на котловане будущего Рокфеллер-центра скинулись и купили шестиметровую пихту. Украсили её гирляндами, которые сделали их семьи. В тот день им выдавали зарплату — праздновать было что.",
+"Через два года центр достроили и устроили первое официальное зажжение: всего 700 огней. С 1951 года церемонию показывают по телевидению. Самая большая ёлка здесь стояла в 1999-м — около 30 метров.",
+"С 2017 года гирлянды на ней светодиодные, а питаются от сотен солнечных панелей на крыше соседнего небоскрёба."],
+facts:[["Первая ёлка","1931, пихта ~6 м"],["Первое зажжение","1933"],["Рекорд высоты","~30 м, 1999"],["Энергия","солнечные панели"]],
+lat:40.7587,lon:-73.9787,where:"площадь Рокфеллер-плаза"},
+{id:"trafalgar",row:1,col:4,name:"Ёлка-подарок на Трафальгарской площади",kind:"Лондон, Великобритания",rec:"1947",recNote:"с этого года Осло каждый год дарит Лондону ель",
+story:["Во Вторую мировую норвежский король и правительство жили в эмиграции в Лондоне. После войны Осло решил говорить спасибо по-своему — каждый год отправлять в Лондон большую ель. Так делают с 1947 года без перерывов.",
+"Обычно это норвежская ель 50–60 лет и выше 20 метров. Её выбирают в лесах вокруг Осло заранее, иногда за несколько лет, и рубят в ноябре на церемонии с мэром Осло и британским послом.",
+"После праздников дерево не выбрасывают: его измельчают и компостируют, получается мульча."],
+facts:[["Вид","ель обыкновенная"],["Возраст","50–60 лет"],["Высота","20+ м"],["Потом","мульча"]],
+lat:51.5080,lon:-0.1281,where:"Трафальгарская площадь"},
+{id:"riga",row:2,col:1,name:"Первая городская ёлка",kind:"Рига, Латвия",rec:"1510",recNote:"год первой ёлки на Ратушной площади",
+story:["В 1510 году члены Братства Черноголовых — гильдии неженатых купцов — поставили на Ратушной площади украшенное дерево, а в конце праздников сожгли его. Запись об этом сохранилась в архивах братства.",
+"В 2010 году, к 500-летию, в брусчатку площади у Дома Черноголовых вмонтировали камень с надписью на восьми языках. Позже на этом месте появилась бронзовая ёлка.",
+"Таллин с Ригой не согласен: там уверяют, что такое же братство поставило ёлку на своей Ратушной площади ещё в 1441 году. Спор идёт до сих пор."],
+facts:[["Кто поставил","Братство Черноголовых"],["Памятный камень","с 2010 года"],["Соперник","Таллин, 1441"]],
+lat:56.9474,lon:24.1065,where:"Ратушная площадь, у Дома Черноголовых"},
+{id:"quinault",row:2,col:3,name:"Самая большая ель",kind:"Озеро Куинолт, штат Вашингтон, США",rec:"~1000 лет",recNote:"возраст крупнейшей ситхинской ели в мире",
+story:["Это самая массивная ситхинская ель на планете. Высота 58 метров, обхват ствола у земли около 17 метров — чтобы обнять её, нужно человек десять.",
+"Она растёт в умеренном дождевом лесу у озера Куинолт, который местные зовут Долиной гигантов. Здесь почти не бывает морозов и жары, а почва богатая — идеальные условия для деревьев-великанов.",
+"За звание самой большой с ней годами спорила ель из Орегона, но по сумме баллов куинолтская оказалась больше."],
+facts:[["Вид","Picea sitchensis"],["Высота","58 м"],["Обхват","~17 м"],["Возраст","~1000 лет"]],
+lat:47.4756,lon:-123.8307,where:"начало тропы Big Spruce, до ели около 500 м пешком"},
+{id:"belovezh",row:2,col:5,name:"Ель Деда Мороза",kind:"Беловежская пуща, Беларусь",rec:"40 м",recNote:"живая ель, которую наряжают прямо в лесу",
+story:["Когда выбирали место для поместья белорусского Деда Мороза, его определила именно эта ель. Высота — около 40 метров, возраст больше 120 лет.",
+"Поместье открыли 16 декабря 2003 года. Ель никто не рубит: каждый год её наряжают прямо там, где она растёт. Такая ёлка служит десятилетиями.",
+"Беловежская пуща — один из последних кусков первобытного леса, который когда-то тянулся по всей Европе. Она входит в список Всемирного наследия ЮНЕСКО."],
+facts:[["Высота","~40 м"],["Возраст","120+ лет"],["Поместье","с 2003 года"]],
+lat:52.6169,lon:23.8923,where:"поместье Деда Мороза"},
+{id:"tjikko",row:3,col:3,trunk:true,name:"Старый Тикко — самая старая ель",kind:"Гора Фулуфьеллет, Швеция",rec:"9&nbsp;567 лет",recNote:"возраст корневой системы",
+story:["Сверху это невзрачная ель высотой 5 метров. Ствол у неё молодой: каждый живёт около 600 лет. Когда он умирает, корни выпускают новый — такое размножение называется вегетативным клонированием.",
+"Корни учёные проверили радиоуглеродным методом и нашли части возрастом 375, 5&nbsp;660, 9&nbsp;000 и 9&nbsp;550 лет. Значит, ель пустила корни сразу после того, как с горы сошёл ледник последнего ледникового периода.",
+"Нашёл её в 2004 году шведский учёный Лейф Кульман и назвал в честь своей умершей собаки. Поэтому в нашей ёлке она — ствол: снаружи молодая, а держится на тысячелетиях."],
+facts:[["Вид","ель обыкновенная"],["Высота","5 м"],["Ствол живёт","~600 лет"],["Корни","~9&nbsp;567 лет"]],
+lat:61.63931,lon:12.67633,where:"национальный парк Фулуфьеллет"}
+];
+const app=document.getElementById('app');
+const fmt=(v,p,n)=>Math.abs(v).toFixed(4).replace('.',',')+'° '+(v>=0?p:n);
+const tree=cur=>`<nav class="tree" aria-label="Ёлка из QR-кодов">${T.map(t=>`<a href="#${t.id}" style="grid-row:${t.row+1};grid-column:${t.col}/span 2" class="${t.trunk?'trunk ':''}${cur===t.id?'on':''}" aria-label="${t.name}"></a>`).join('')}</nav>`;
+const list=skip=>`<ul class="list">${T.filter(t=>t.id!==skip).map(t=>`<li><a href="#${t.id}"><i class="${t.trunk?'t':''}"></i><div><b>${t.name}</b><span>${t.kind}</span></div></a></li>`).join('')}</ul>`;
+const home=()=>`<div class="view">
+<div class="top"><span>Эко-ёлка</span></div>
+<div class="hero"><div><h1>Эко-ёлка</h1><p class="kind" style="margin:0">Семь QR-кодов — семь настоящих елей. Ни одну не срубили ради этой ёлки.</p></div>${tree('')}</div>
+<div class="story"><p>Каждый квадрат нашей ёлки — QR-код. Отсканируй его и узнаешь, где растёт или стоит одна из самых знаменитых елей мира и чем она прославилась. Ствол — самая старая ель на Земле.</p></div>
+<div class="intro"><h2>Все ёлки</h2></div>${list('')}
+<footer>Поделка «Эко-ёлка»</footer></div>`;
+const page=t=>`<div class="view">
+<div class="top"><a href="#">← Вся ёлка</a><span>${T.indexOf(t)+1} из 7</span></div>
+<h1>${t.name}</h1><p class="kind">${t.kind}</p>
+<div class="hero"><div class="record">${t.rec}<small>${t.recNote}</small></div>${tree(t.id)}</div>
+<div class="story">${t.story.map(p=>`<p>${p}</p>`).join('')}</div>
+<ul class="facts">${t.facts.map(f=>`<li><span>${f[0]}</span><span>${f[1]}</span></li>`).join('')}</ul>
+${t.hidden?`<section class="coords hidden"><h2>Координаты</h2><div class="num">засекречены</div><p class="note">Где именно стоит эта ель, знают только несколько учёных. Так её защищают.</p></section>`
+:`<section class="coords"><h2>Координаты</h2><div class="num">${fmt(t.lat,'с. ш.','ю. ш.')}<br>${fmt(t.lon,'в. д.','з. д.')}</div><p class="note">${t.where}</p><a class="btn" href="https://www.google.com/maps?q=${t.lat},${t.lon}" target="_blank" rel="noopener">Открыть на карте</a></section>`}
+<div class="others"><h2>Другие ёлки</h2>${list(t.id)}</div>
+<footer>Поделка «Эко-ёлка»</footer></div>`;
+const render=()=>{const id=location.hash.slice(1);const t=T.find(x=>x.id===id);app.innerHTML=t?page(t):home();window.scrollTo(0,0);document.title=t?t.name.replace(/&nbsp;/g,' ')+' · Эко-ёлка':'Эко-ёлка'};
+window.addEventListener('hashchange',render);render();
+}
+</script>
+</body>
+</html>
