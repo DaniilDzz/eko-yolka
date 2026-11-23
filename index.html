@@ -35,8 +35,14 @@ h1{font:700 clamp(30px,8vw,46px)/1.05 Unbounded,sans-serif;margin:0 0 14px;text-
 .tree a.on{background:var(--green);box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--green)}
 .tree a.trunk{background:light-dark(#d9c8b8,#3a2a1d)}
 .tree a.trunk.on{background:var(--trunk);box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--trunk)}
-.pic{margin:0 0 26px;border-radius:16px;overflow:hidden;aspect-ratio:600/340;background:#dfe8e2}
-.pic svg{display:block;width:100%;height:100%}
+.pic{margin:0 0 26px}
+.ph{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:3/2;background:#dfe8e2}
+.ph svg{position:absolute;inset:0;width:100%;height:100%}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.ph.fail img{display:none}
+.pic figcaption{font-size:12px;color:var(--soft);margin-top:8px;line-height:1.4}
+.pic figcaption a{color:var(--soft)}
+.pic:has(.fail) figcaption{display:none}
 .story p{margin:0 0 16px}
 .facts{list-style:none;padding:0;margin:22px 0 0;border-top:1px solid var(--line)}
 .facts li{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--line);font-size:15px}
@@ -126,6 +132,19 @@ quinault:()=>{let o=grad('g5','#c6d9c9','#e9f1e7');o+=`<polygon fill="#a7bfae" p
 belovezh:()=>{let o=grad('g6','#d9e3ec','#f5f8fb');for(let i=0;i<14;i++)o+=sp(i*46,282,110+(i*29)%50,46,'#3b5b48');o+=`<rect y="276" width="600" height="64" fill="#f4f7fa"/><path d="M0 290 q150 -14 300 0 t300 0 v50 h-600z" fill="#e3eaf1"/>`;o+=`<rect x="390" y="196" width="160" height="94" fill="#8a5a32"/><polygon fill="#5d3a1f" points="378,198 470,120 562,198"/><polygon fill="none" stroke="#e9d3b0" stroke-width="3" points="398,190 470,132 542,190"/><rect x="418" y="222" width="26" height="30" fill="#ffd77a"/><rect x="496" y="222" width="26" height="30" fill="#ffd77a"/><rect x="456" y="246" width="28" height="44" fill="#5d3a1f"/><polygon fill="#f4f7fa" points="378,198 470,120 562,198 552,198 470,130 388,198"/>`;const cx=200,by=292,h=272,w=196;o+=sp(cx,by,h,w,'#1f5130',6);for(let k=1;k<=5;k++){const y=by-h+(h*0.85)*k/6,hw=w/2*k/6;o+=`<path d="M${cx-hw*0.9} ${y-12} Q${cx} ${y+8} ${cx+hw*0.9} ${y-12}" stroke="#ffd166" stroke-width="2" fill="none"/>`}o+=dots(cx,by,h,w,40,['#ef476f','#ffd166','#4cc9f0','#ffffff'],3,3);const r=rnd(9);for(let i=0;i<45;i++)o+=`<circle cx="${(r()*600).toFixed(0)}" cy="${(r()*270).toFixed(0)}" r="${(1+r()*1.6).toFixed(1)}" fill="#fff"/>`;return o},
 tjikko:()=>{let o=`<rect width="600" height="340" fill="#4a3220"/><rect width="600" height="180" fill="#dce7ee"/><polygon fill="#9aa28a" points="0,150 120,110 240,140 380,90 520,120 600,105 600,180 0,180"/><path d="M0 178 Q300 166 600 178 V214 Q300 204 0 214Z" fill="#6b4a2f"/><path d="M0 214 Q300 204 600 214 V266 Q300 256 0 268Z" fill="#5a3d26"/>`;const rootsP=[["M300 182 C292 200 250 205 214 218",3],["M300 182 C310 205 360 200 392 224",3],["M300 182 C296 220 240 240 170 262",2.4],["M300 182 C308 232 380 250 440 268",2.4],["M300 182 C300 230 268 280 236 304",2],["M300 182 C304 240 340 290 372 320",2]];for(const[d,w]of rootsP)o+=`<path d="${d}" stroke="#d9b98c" stroke-width="${w}" fill="none" stroke-linecap="round"/>`;const tip=(x,y,t,a)=>`<circle cx="${x}" cy="${y}" r="4" fill="#f5e6c8"/><text x="${a=='e'?x-9:x+9}" y="${y+4}" text-anchor="${a=='e'?'end':'start'}" font-family="Golos Text,sans-serif" font-size="13" font-weight="600" fill="#f5e6c8">${t}</text>`;o+=tip(214,218,'375 лет','e')+tip(392,224,'5 660 лет','s')+tip(170,262,'9 000 лет','e')+tip(372,320,'9 550 лет','s');o+=sp(300,182,74,42,'#2f5a3a');o+=`<ellipse cx="300" cy="178" rx="40" ry="7" fill="#3d6b46"/>`;return o}
 };
+const PH={
+tallest:{f:"Sitka 01.JPG",a:"Wikimedia Commons",n:"Ситхинская ель в Олимпийском национальном парке. Саму рекордсменку не фотографируют для публики — её место скрыто."},
+rockefeller:{f:"Rockefeller Christmas Tree.jpg",a:"Wikimedia Commons"},
+trafalgar:{f:"Trafalgar Square Christmas Carols - Dec 2006.jpg",a:"Diliff, CC BY-SA 3.0"},
+riga:{f:"House of Blackheads at Dusk 3, Riga, Latvia - Diliff.jpg",a:"Diliff",n:"Дом Черноголовых на Ратушной площади — здесь в 1510 году стояла первая ёлка."},
+quinault:{f:"Largest Sitka Spruce, Quinault Lake, Washington 2018-08-21 OC-LSC-0090.jpg",a:"Wikimedia Commons"},
+tjikko:{f:"Old-Tjikko-2011-07-19-001.jpg",a:"Karl Brodowsky"}
+};
+const fig=t=>{const p=PH[t.id];const art=`<svg viewBox="0 0 600 340" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Иллюстрация: ${t.name}">${ART[t.id]()}</svg>`;
+if(!p)return `<figure class="pic"><div class="ph">${art}</div><figcaption>Иллюстрация. Свободного фото этой ели пока нет.</figcaption></figure>`;
+const u='https://commons.wikimedia.org/wiki/Special:FilePath/'+encodeURIComponent(p.f.replace(/ /g,'_'))+'?width=960';
+const pg='https://commons.wikimedia.org/wiki/File:'+encodeURIComponent(p.f.replace(/ /g,'_'));
+return `<figure class="pic"><div class="ph">${art}<img src="${u}" alt="${t.name}" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.classList.add('fail')"></div><figcaption>${p.n?p.n+' ':''}Фото: <a href="${pg}" target="_blank" rel="noopener">${p.a} / Wikimedia Commons</a></figcaption></figure>`};
 const app=document.getElementById('app');
 const fmt=(v,p,n)=>Math.abs(v).toFixed(4).replace('.',',')+'° '+(v>=0?p:n);
 const tree=cur=>`<nav class="tree" aria-label="Ёлка из QR-кодов">${T.map(t=>`<a href="#${t.id}" style="grid-row:${t.row+1};grid-column:${t.col}/span 2" class="${t.trunk?'trunk ':''}${cur===t.id?'on':''}" aria-label="${t.name}"></a>`).join('')}</nav>`;
@@ -139,7 +158,7 @@ const home=()=>`<div class="view">
 const page=t=>`<div class="view">
 <div class="top"><a href="#">← Вся ёлка</a><span>${T.indexOf(t)+1} из 7</span></div>
 <h1>${t.name}</h1><p class="kind">${t.kind}</p>
-<figure class="pic"><svg viewBox="0 0 600 340" role="img" aria-label="Иллюстрация: ${t.name}">${ART[t.id]()}</svg></figure>
+${fig(t)}
 <div class="hero"><div class="record">${t.rec}<small>${t.recNote}</small></div>${tree(t.id)}</div>
 <div class="story">${t.story.map(p=>`<p>${p}</p>`).join('')}</div>
 <ul class="facts">${t.facts.map(f=>`<li><span>${f[0]}</span><span>${f[1]}</span></li>`).join('')}</ul>
